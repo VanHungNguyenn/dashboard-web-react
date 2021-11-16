@@ -21,6 +21,16 @@ const Table = (props) => {
 		range = [...Array(pages).keys()]
 	}
 
+	const [currPage, setCurrPage] = useState(0)
+
+	const selectPage = (page) => {
+		const start = Number(props.limit) * page
+		const end = start + Number(props.limit)
+
+		setDataShow(props.bodyData.slice(start, end))
+		setCurrPage(page)
+	}
+
 	return (
 		<div>
 			<div className='table-wrapper'>
@@ -47,7 +57,13 @@ const Table = (props) => {
 				<div className='table__pagination'>
 					{range.map((item, i) => {
 						return (
-							<div key={i} className={`table__pagination-item`}>
+							<div
+								key={i}
+								className={`table__pagination-item ${
+									currPage === i ? 'active' : ''
+								}`}
+								onClick={() => selectPage(i)}
+							>
 								{item + 1}
 							</div>
 						)
