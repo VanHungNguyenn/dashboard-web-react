@@ -7,6 +7,9 @@ import Table from '../components/table/Table'
 import customers from '../assets/JsonData/top-customers.json'
 import orders from '../assets/JsonData/top-orders.json'
 import Badge from '../components/badge/Badge'
+import { useSelector } from 'react-redux'
+// import { useDispatch } from 'react-redux'
+// import ThemeAction from '../redux/actions/ThemeAction'
 
 const chartOptions = {
 	series: [
@@ -104,6 +107,14 @@ const renderOrderBody = (item, i) => {
 }
 
 const Dashboard = () => {
+	const themeReducer = useSelector((state) => state.ThemeReducer.mode)
+
+	// const dispatch = useDispatch()
+
+	// useEffect(() => {
+	// 	dispatch(ThemeAction.getTheme())
+	// }, [dispatch])
+
 	return (
 		<div>
 			<h2 className='page-header'>Dashboard</h2>
@@ -128,7 +139,17 @@ const Dashboard = () => {
 					<div className='card full-height'>
 						{/* chart here */}
 						<Chart
-							options={chartOptions.options}
+							options={
+								themeReducer === 'theme-mode-dark'
+									? {
+											...chartOptions.options,
+											theme: { mode: 'dark' },
+									  }
+									: {
+											...chartOptions.options,
+											theme: { mode: 'light' },
+									  }
+							}
 							series={chartOptions.series}
 							type='line'
 							height='100%'
